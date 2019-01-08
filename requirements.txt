@@ -1,0 +1,12 @@
+-c constraints.txt
+bumpversion
+click
+flake8
+future
+ipython
+lxml
+pytest
+pytest-cov
+pytest-mock
+tox
+twine
