@@ -87,7 +87,7 @@ class TempestJunitSuite(MutableSequence):
         d = {
             'errors': self._xml_error_count,
             'failures': self._xml_failure_count,
-            'name': 'xml suite create by tempest-zigzag',
+            'name': 'xml suite created by tempest-zigzag',
             'tests': self._xml_total_test_count,
             'time': self._xml_total_time,
         }

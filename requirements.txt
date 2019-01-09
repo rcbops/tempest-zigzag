@@ -10,3 +10,4 @@ pytest-cov
 pytest-mock
 tox
 twine
+pytest-helpers-namespace
