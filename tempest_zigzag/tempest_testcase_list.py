@@ -136,14 +136,17 @@ class TempestTestcaseList(object):
     @property
     def xml_failure_elements(self):
         """The xml child elements with the tag failure
+
+        Returns:
+            list: list of failure elements
         """
-        # TODO try and reraise
         return self.xml_element.findall('failure')
 
     @property
     def xml_error_elements(self):
         """The xml child elements with the tag error
-        """
-        # TODO try and reraise
-        return self.xml_element.findall('error')
 
+        Returns:
+            list: list of error elements
+        """
+        return self.xml_element.findall('error')

@@ -113,7 +113,12 @@ class TempestJunitXMLSuite(MutableSequence):
         for test in self._test_list:
             xml.append(test.xml_element)
 
-        return etree.tostring(xml)
+        xml_string = etree.tostring(xml)
+
+        if type(xml_string) is bytes:  # not sure why this is sometime a bytes and sometimes a string
+            return xml_string.decode('UTF-8')
+        else:
+            return etree.tostring(xml)
 
     def __getitem__(self, key):
         """MutableSequence ABC override."""
@@ -139,5 +144,3 @@ class TempestJunitXMLSuite(MutableSequence):
         """MutableSequence ABC override."""
 
         return len(self._test_list)
-
-

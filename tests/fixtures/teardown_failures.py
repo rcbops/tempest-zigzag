@@ -70,7 +70,7 @@ def string_test_xml_teardown_failure():
             <testcase classname="tempest.api.compute.admin.test_aggregates.AggregatesAdminTestJSON" name="test_four[id-c8e85064-e79b-4906-9931-c11c24294d02]" time="0.121"/>
             <testcase classname="tempest.api.compute.admin.test_aggregates.AggregatesAdminTestJSON" name="test_five[id-0d148aa3-d54c-4317-aa8d-42040a475e20,smoke,negative,volume]" time="0.115"/>
         </testsuite>
-        """
+        """  # noqa
 
     return junit_xml
 
@@ -114,7 +114,7 @@ def string_test_xml_teardown_multiple_failures():
             <testcase classname="tempest.api.compute.admin.test_aggregates.AggregatesAdminTestJSON" name="test_four[id-c8e85064-e79b-4906-9931-c11c24294d02]" time="0.121"/>
             <testcase classname="tempest.api.compute.admin.test_aggregates.AggregatesAdminTestJSON" name="test_five[id-0d148aa3-d54c-4317-aa8d-42040a475e20,smoke,negative,volume]" time="0.115"/>
         </testsuite>
-        """
+        """  # noqa
 
     return junit_xml
 
@@ -147,6 +147,6 @@ def string_test_xml_teardown_class_not_in_list():
             <testcase classname="tempest.api.compute.admin.test_aggregates.AggregatesAdminTestJSON" name="test_four[id-c8e85064-e79b-4906-9931-c11c24294d02]" time="0.121"/>
             <testcase classname="tempest.api.compute.admin.test_aggregates.AggregatesAdminTestJSON" name="test_five[id-0d148aa3-d54c-4317-aa8d-42040a475e20,smoke,negative,volume]" time="0.115"/>
         </testsuite>
-        """
+        """  # noqa
 
     return junit_xml

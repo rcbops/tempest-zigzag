@@ -17,7 +17,7 @@ entry_points = {
 
 setup(
     name='tempest-zigzag',
-    version='0.0.0',
+    version='0.1.0',
     author="rcbops",
     author_email='rcb-deploy@lists.rackspace.com',
     maintainer='rcbops',

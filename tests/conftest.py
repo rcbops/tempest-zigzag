@@ -3,7 +3,6 @@
 # Imports
 # ======================================================================================================================
 
-import pytest
 pytest_plugins = ['helpers_namespace',
                   'tests.fixtures.setup_failures',
                   'tests.fixtures.teardown_failures',

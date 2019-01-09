@@ -129,4 +129,3 @@ class TestTempestZigZag(object):
         assert len(observed) == len(expected)
         # the broken testcase should be the last case in the list
         assert 'setUpClass (tempest.oops.this.class.is.not.in.the.TestList)' == observed[-1].attrib['name']
-

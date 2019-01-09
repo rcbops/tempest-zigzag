@@ -46,7 +46,6 @@ class TempestTestcaseXml(object):
         except AttributeError:
             raise TempestXMLAccessError("Classname not found in name: {}".format(self.name))
 
-
     @property
     def name(self):
         """The value of the 'name' attribute
