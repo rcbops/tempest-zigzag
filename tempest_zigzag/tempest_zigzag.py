@@ -7,7 +7,8 @@ from tempest_zigzag.tempest_test_list import TempestTestList
 
 class TempestZigZag(object):
 
-    def __init__(self, junit_input_file, test_list):
+    @classmethod
+    def go(cls, junit_input_file, test_list):
         xml_suite = TempestJunitSuite(junit_input_file)
         test_list = TempestTestList(test_list)
 
@@ -25,7 +26,7 @@ class TempestZigZag(object):
                         for test in tests_to_alter:
                             # attach child elements to appropriate test cases from the test list
                             for child in broken.child_elements:
-                                dup_child = self._duplicate_child_failure_elements(child, "setUpClass error: {}".format(broken.classname_in_wrong_place))
+                                dup_child = cls._duplicate_child_failure_elements(child, "setUpClass error: {}".format(broken.classname_in_wrong_place))
                                 test.xml_element.append(dup_child)
                             test.time = broken.time
                             xml_suite.append(test)  # insert reconstructed test records into the suite
@@ -40,16 +41,15 @@ class TempestZigZag(object):
                         # find elements in the xml that match the classname of the broken entry
                         for test in tests_to_alter:
                             for child in broken.child_elements:  # add new tags to existing test in xml suite
-                                dup_child = self._duplicate_child_failure_elements(child, "tearDownClass error: {}".format(broken.classname_in_wrong_place))
+                                dup_child = cls._duplicate_child_failure_elements(child, "tearDownClass error: {}".format(broken.classname_in_wrong_place))
                                 test.xml_element.append(dup_child)
                     else:
                         xml_suite.append(broken)  # if we can't alter any records we should put the broken record back
 
-            with open(junit_input_file, 'w') as f:
-                f.write(xml_suite.xml)  # overwrite if there are changes to make
+        return xml_suite.xml
 
-    @staticmethod
-    def _duplicate_child_failure_elements(element, message):
+    @classmethod
+    def _duplicate_child_failure_elements(cls, element, message):
         """Re-writes the tags of a list of failure elements
         also writes a new message attribute
 

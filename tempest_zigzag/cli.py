@@ -17,7 +17,7 @@ from tempest_zigzag.tempest_zigzag import TempestZigZag
 @click.argument('test_list', type=click.Path(exists=True))
 def main(junit_input_file, test_list):
     """Process multiple files created by tempest into a single accurate junit xml artifact"""
-    TempestZigZag(junit_input_file, test_list)
+    click.echo(str(TempestZigZag.go(junit_input_file, test_list)))
 
 
 if __name__ == "__main__":
