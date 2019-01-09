@@ -6,7 +6,9 @@
 # ======================================================================================================================
 from __future__ import absolute_import
 import click
+import sys
 from tempest_zigzag.tempest_zigzag import TempestZigZag
+from tempest_zigzag.tempest_testcase_xml import TempestXMLAccessError
 
 
 # ======================================================================================================================
@@ -17,7 +19,13 @@ from tempest_zigzag.tempest_zigzag import TempestZigZag
 @click.argument('test_list', type=click.Path(exists=True))
 def main(junit_input_file, test_list):
     """Process multiple files created by tempest into a single accurate junit xml artifact"""
-    click.echo(str(TempestZigZag.go(junit_input_file, test_list)))
+    try:
+        click.echo(str(TempestZigZag.process_xml(junit_input_file, test_list)))
+    except(TempestXMLAccessError, Exception) as e:
+        click.echo(click.style(str(e), fg='red'))
+        click.echo(click.style("\nFailed!", fg='red'))
+
+        sys.exit(1)
 
 
 if __name__ == "__main__":

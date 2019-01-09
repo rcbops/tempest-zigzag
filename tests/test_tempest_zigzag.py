@@ -8,7 +8,7 @@ class TestTempestZigZag(object):
         """Tests that when there is nothing to do it will return a string
         that is functionally identical to the xml passed in"""
 
-        result = TempestZigZag.go(file_test_xml_all_pass, file_test_list)
+        result = TempestZigZag.process_xml(file_test_xml_all_pass, file_test_list)
         expected = etree.parse(file_test_xml_all_pass).getroot()
         observed = etree.XML(result)
 
@@ -27,7 +27,7 @@ class TestTempestZigZag(object):
         """Tests that the correct testcase elements will be created
         when a setUpClass failure is found"""
 
-        result = TempestZigZag.go(file_test_xml_setup_failure, file_test_list)
+        result = TempestZigZag.process_xml(file_test_xml_setup_failure, file_test_list)
         observed = etree.XML(result)
         new_case_count = 0
 
@@ -47,7 +47,7 @@ class TestTempestZigZag(object):
         """Tests that the correct testcase elements will be altered
         when a teardown failure is found"""
 
-        result = TempestZigZag.go(file_test_xml_teardown_failure, file_test_list)
+        result = TempestZigZag.process_xml(file_test_xml_teardown_failure, file_test_list)
         observed = etree.XML(result)
 
         assert len(observed) is 10
@@ -64,7 +64,7 @@ class TestTempestZigZag(object):
         """Tests that the correct testcase elements will be altered
         when multiple teardown failures are found"""
 
-        result = TempestZigZag.go(file_test_xml_teardown_multiple_failures, file_test_list)
+        result = TempestZigZag.process_xml(file_test_xml_teardown_multiple_failures, file_test_list)
         observed = etree.XML(result)
 
         assert len(observed) is 10
@@ -81,7 +81,7 @@ class TestTempestZigZag(object):
         """Tests that the correct testcase elements will be altered
         when multiple teardown failures are found"""
 
-        result = TempestZigZag.go(file_test_xml_setup_multiple_failures, file_test_list)
+        result = TempestZigZag.process_xml(file_test_xml_setup_multiple_failures, file_test_list)
         observed = etree.XML(result)
 
         assert len(observed) is 10
@@ -99,7 +99,7 @@ class TestTempestZigZag(object):
         but there are no corresponding tests in the test list
         """
 
-        result = TempestZigZag.go(file_test_xml_teardown_class_not_in_list, file_test_list)
+        result = TempestZigZag.process_xml(file_test_xml_teardown_class_not_in_list, file_test_list)
         expected = etree.parse(file_test_xml_teardown_class_not_in_list).getroot()
         observed = etree.XML(result)
 
@@ -117,7 +117,7 @@ class TestTempestZigZag(object):
         but there are no corresponding tests in the test list
         """
 
-        result = TempestZigZag.go(file_test_xml_setup_class_not_in_list, file_test_list)
+        result = TempestZigZag.process_xml(file_test_xml_setup_class_not_in_list, file_test_list)
         expected = etree.parse(file_test_xml_setup_class_not_in_list).getroot()
         observed = etree.XML(result)
 

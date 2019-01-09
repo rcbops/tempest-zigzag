@@ -4,7 +4,7 @@ from lxml import etree
 from tempest_zigzag.tempest_testcase_xml import TempestTestcaseXml
 
 
-class TempestJunitSuite(MutableSequence):
+class TempestJunitXMLSuite(MutableSequence):
     """maps directly to an XML suite
     Can create an xml string
     """
@@ -41,7 +41,14 @@ class TempestJunitSuite(MutableSequence):
         return tests_to_return
 
     def find_tests_by_classname(self, classname):
-        """gets a list of tests that match a classname"""
+        """Gets a list of tests that match a classname
+
+        Args:
+            classname: (str) the classname of the tests
+
+        Returns:
+            list: a list of TempestTestcaseXml
+        """
         return [test for test in self._test_list if test.classname == classname]
 
     @property
@@ -82,7 +89,11 @@ class TempestJunitSuite(MutableSequence):
 
     @property
     def xml(self):
-        """Generate the xml based on the contents of this sequence"""
+        """Generate the xml based on the contents of this sequence
+
+        Returns:
+            str: the xml string based on the state of this object
+        """
         # a dict key = name in xml, value = value if there is one
         d = {
             'errors': self._xml_error_count,

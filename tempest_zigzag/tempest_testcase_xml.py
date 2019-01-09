@@ -27,48 +27,80 @@ class TempestTestcaseXml(object):
         """The value of the 'classname' attribute
         Taken straight from the xml
         """
-        # TODO try and reraise
-        return self.xml_element.attrib['classname']
+
+        try:
+            return self.xml_element.attrib['classname']
+        except KeyError as e:
+            raise TempestXMLAccessError(e)
 
     @property
     def classname_in_wrong_place(self):
-        """The classname that sometimes appears in the name attribute"""
+        """The classname that sometimes appears in the name attribute
 
-        return self._CLASSNAME.search(self.name).group(1)
+        Returns:
+            str: the classname extracted from a broken entry
+        """
+
+        try:
+            return self._CLASSNAME.search(self.name).group(1)
+        except AttributeError:
+            raise TempestXMLAccessError("Classname not found in name: {}".format(self.name))
+
 
     @property
     def name(self):
         """The value of the 'name' attribute
         Taken straight from the xml
+
+        Returns:
+            str: the name value from the xml
         """
-        # TODO try and reraise
-        return self.xml_element.attrib['name']
+
+        try:
+            return self.xml_element.attrib['name']
+        except KeyError as e:
+            raise TempestXMLAccessError(e)
 
     @property
     def time(self):
         """The value of the 'time' attribute
         Taken straight from the xml
+
+        Returns:
+            str: the time value from the xml
         """
-        # TODO try and reraise
-        return self.xml_element.attrib['time']
+
+        try:
+            return self.xml_element.attrib['time']
+        except KeyError as e:
+            raise TempestXMLAccessError(e)
 
     @property
     def xml_failure_elements(self):
         """The xml child elements with the tag failure
+
+        Returns:
+            list : list of all the child failure elements
         """
-        # TODO try and reraise
+
         return self.xml_element.findall('failure')
 
     @property
     def xml_error_elements(self):
         """The xml child elements with the tag error
+
+        Returns:
+            list : list of all child error elements
         """
-        # TODO try and reraise
+
         return self.xml_element.findall('error')
 
     @property
     def child_elements(self):
         """The xml child elements
+
+        Returns:
+            list : a list of child etree.Element
         """
         return list(self.xml_element)
 
@@ -77,5 +109,16 @@ class TempestTestcaseXml(object):
         """The XML element that was passed in on instantiation
         This is used when we go to reconstruct the finished xml
         called only when we determine its accurate
+
+        Returns:
+            etree.Element
         """
         return self._xml_element
+
+
+class TempestXMLAccessError(Exception):
+    """An Error used by TempestTestcaseXml"""
+
+    def __init__(self, message):
+        """An error to raise in the event we cant find something we need in the xml"""
+        super(TempestXMLAccessError, self).__init__(message)
