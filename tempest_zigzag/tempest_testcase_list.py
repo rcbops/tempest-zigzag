@@ -15,7 +15,7 @@ class TempestTestcaseList(object):
         Args:
             test_entry_string: (str) A single line from 'tempest run --list-tests'
         """
-        self._test_entry_string = test_entry_string
+        self._test_entry_string = test_entry_string.strip()
         self._xml_element = None
         self._time = '0.00'
 

@@ -23,11 +23,11 @@ class TestTempestZigZag(object):
             # test that the observed cases have the same names as the expected cases
             assert len([case for case in expected if case.attrib['name'] == observed_case.attrib['name']]) is 1
 
-    def test_setupclass_failure(self, file_test_xml_setup_failure, file_test_list):
+    def test_setupclass_failure(self, file_test_xml_setup_failure, file_test_list_with_whitespace):
         """Tests that the correct testcase elements will be created
         when a setUpClass failure is found"""
 
-        result = TempestZigZag.process_xml(file_test_xml_setup_failure, file_test_list)
+        result = TempestZigZag.process_xml(file_test_xml_setup_failure, file_test_list_with_whitespace)
         observed = etree.XML(result)
         new_case_count = 0
 
@@ -60,11 +60,11 @@ class TestTempestZigZag(object):
                 assert 'An unexpected error prevented the server from fulfilling your request.' in error_tag.text
                 assert not testcase.find('failure')  # there should not be any failures
 
-    def test_teardownclass_multiple_failures(self, file_test_xml_teardown_multiple_failures, file_test_list):
+    def test_teardownclass_multiple_failures(self, file_test_xml_teardown_multiple_failures, file_test_list_with_whitespace):  # noqa
         """Tests that the correct testcase elements will be altered
         when multiple teardown failures are found"""
 
-        result = TempestZigZag.process_xml(file_test_xml_teardown_multiple_failures, file_test_list)
+        result = TempestZigZag.process_xml(file_test_xml_teardown_multiple_failures, file_test_list_with_whitespace)
         observed = etree.XML(result)
 
         assert len(observed) is 10

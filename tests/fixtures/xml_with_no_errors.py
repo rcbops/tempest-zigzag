@@ -63,18 +63,19 @@ def string_test_xml_skip_error_fail():
     junit_xml = \
         """
         <testsuite errors="1" failures="1" name="" tests="10" time="1956.921">
-            <testcase classname="tempest.api.compute.admin.test_agents.AgentsAdminTestJSON" name="test_one[id-1fc6bdc8-0b6d-4cc7-9f30-9b04fabe5b90,smoke]" time="18.794"/>
+            <testcase classname="tempest.api.compute.admin.test_agents.AgentsAdminTestJSON" name="test_one[id-1fc6bdc8-0b6d-4cc7-9f30-9b04fabe5b90,smoke]" time="18.794">
               <skipped>Skipped for a good reason.</skipped>
             </testcase>
-            <testcase classname="tempest.api.compute.admin.test_agents.AgentsAdminTestJSON" name="test_two[id-470e0b89-386f-407b-91fd-819737d0b335,negative]" time="8.765"/>
+            <testcase classname="tempest.api.compute.admin.test_agents.AgentsAdminTestJSON" name="test_two[id-470e0b89-386f-407b-91fd-819737d0b335,negative]" time="8.765">
               <error type="a legit error">
                 Woops looks like something bad happened!
               </error>
             </testcase>
-            <testcase classname="tempest.api.compute.admin.test_agents.AgentsAdminTestJSON" name="test_three[id-6a326c69-654b-438a-80a3-34bcc454e138,smoke]" time="9.039"/>
-            <failure type="a legit failure">
-              Woops looks like something really bad happened!!!
-            </failure>
+            <testcase classname="tempest.api.compute.admin.test_agents.AgentsAdminTestJSON" name="test_three[id-6a326c69-654b-438a-80a3-34bcc454e138,smoke]" time="9.039">
+              <failure type="a legit failure">
+                Woops looks like something really bad happened!!!
+              </failure>
+            </testcase>
             <testcase classname="tempest.api.compute.admin.test_agents.AgentsAdminTestJSON" name="test_four[id-eabadde4-3cd7-4ec4-a4b5-5a936d2d4408,network]" time="0.210"/>
             <testcase classname="tempest.api.compute.admin.test_agents.AgentsAdminTestJSON" name="test_five[id-dc9ffd51-1c50-4f0e-a820-ae6d2a568a9e]" time="0.115"/>
             <testcase classname="tempest.api.compute.admin.test_aggregates.AggregatesAdminTestJSON" name="test_one[id-96be03c7-570d-409c-90f8-e4db3c646996]" time="0.120"/>
