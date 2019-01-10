@@ -11,7 +11,7 @@ Quick Start Guide
 
 1. Install ``tempest-zigzag`` from PyPI with pip::
 
-    $ pip install rpc-zigzag
+    $ pip install tempest-zigzag
 
 2. For more information on using tempest-zigzag launch help by::
 
