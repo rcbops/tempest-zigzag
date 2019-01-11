@@ -27,7 +27,7 @@ The reason for this tool
 
 Tempest has the ability to generate junit xml thanks to the tools 'stestr' and 'subunit'.  Unfortunately there are
 circumstances where the xml it produces does not conform to the contract for tests set out by tempest itself.
-Specifically when a setUpClass or Teardown class fails the reports generated in xml format is inaccurate. When these
+Specifically when a setUpClass or Teardown class fails the reports generated in xml format are inaccurate. When these
 failures occur data is omitted about the true state of the test case. If try to inspect a test that failed its
 setUpClass you will not find a record for it in the xml, you will only find a record for the setUpClass which
 does not speak of any downstream tests that where intended to be executed.
