@@ -30,7 +30,7 @@ circumstances where the XML produced by Tempest does not conform to the contract
 Specifically when a setUpClass or Teardown class fails the reports generated in xml format are inaccurate. When these
 failures occur data is omitted about the true state of the test case. If try to inspect a test that failed its
 setUpClass you will not find a record for it in the XML report, you will only find a record for the setUpClass which
-does not speak of any downstream tests that where intended to be executed.
+does not speak of any downstream tests that were intended to be executed.
 
 This tool will help tempest be more honest about its errors in setup and teardown.  The features described below
 adjust the behavior similar to that found in py.test.
