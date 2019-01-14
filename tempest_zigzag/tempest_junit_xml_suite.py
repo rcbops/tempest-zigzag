@@ -4,7 +4,7 @@ from lxml import etree
 from tempest_zigzag.tempest_testcase_xml import TempestTestcaseXml
 
 
-class TempestJunitSuite(MutableSequence):
+class TempestJunitXMLSuite(MutableSequence):
     """maps directly to an XML suite
     Can create an xml string
     """
@@ -41,7 +41,14 @@ class TempestJunitSuite(MutableSequence):
         return tests_to_return
 
     def find_tests_by_classname(self, classname):
-        """gets a list of tests that match a classname"""
+        """Gets a list of tests that match a classname
+
+        Args:
+            classname: (str) the classname of the tests
+
+        Returns:
+            list: a list of TempestTestcaseXml
+        """
         return [test for test in self._test_list if test.classname == classname]
 
     @property
@@ -82,12 +89,16 @@ class TempestJunitSuite(MutableSequence):
 
     @property
     def xml(self):
-        """Generate the xml based on the contents of this sequence"""
+        """Generate the xml based on the contents of this sequence
+
+        Returns:
+            str: the xml string based on the state of this object
+        """
         # a dict key = name in xml, value = value if there is one
         d = {
             'errors': self._xml_error_count,
             'failures': self._xml_failure_count,
-            'name': 'xml suite create by tempest-zigzag',
+            'name': 'xml suite created by tempest-zigzag',
             'tests': self._xml_total_test_count,
             'time': self._xml_total_time,
         }
@@ -102,7 +113,12 @@ class TempestJunitSuite(MutableSequence):
         for test in self._test_list:
             xml.append(test.xml_element)
 
-        return etree.tostring(xml)
+        xml_string = etree.tostring(xml)
+
+        if type(xml_string) is bytes:  # not sure why this is sometime a bytes and sometimes a string
+            return xml_string.decode('UTF-8')
+        else:
+            return xml_string
 
     def __getitem__(self, key):
         """MutableSequence ABC override."""
@@ -128,5 +144,3 @@ class TempestJunitSuite(MutableSequence):
         """MutableSequence ABC override."""
 
         return len(self._test_list)
-
-

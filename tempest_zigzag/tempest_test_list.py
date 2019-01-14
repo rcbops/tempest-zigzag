@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 from future.moves.collections import Sequence
-from tempest_zigzag.tempest_test_from_list import TempestTestFromList
+from tempest_zigzag.tempest_testcase_list import TempestTestcaseList
 
 
 class TempestTestList(Sequence):
@@ -18,22 +18,7 @@ class TempestTestList(Sequence):
             for line in f.readlines():
                 line = line.strip()
                 if line:
-                    self._test_list.append(TempestTestFromList(line))
-
-    def find_test_by_id(self, idempotent_id):
-        """Find a test by its idempotent id
-
-        Args:
-            idempotent_id: (str)
-
-        Returns:
-            TempestTestFromList
-            None: no test found
-        """
-
-        for test in self._test_list:
-            if test.idempotent_id == idempotent_id:
-                return test
+                    self._test_list.append(TempestTestcaseList(line))
 
     def find_tests_by_classname(self, classname):
         """Find all the tests that have the same class name
