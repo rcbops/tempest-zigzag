@@ -60,8 +60,8 @@ class TestTempestZigZag(object):
                 assert 'An unexpected error prevented the server from fulfilling your request.' in error_tag.text
                 assert not testcase.find('failure')  # there should not be any failures
 
-    def test_teardownclass_multiple_failures(self, 
-                                             file_test_xml_teardown_multiple_failures, 
+    def test_teardownclass_multiple_failures(self,
+                                             file_test_xml_teardown_multiple_failures,
                                              file_test_list_with_whitespace):
         """Tests that the correct testcase elements will be altered
         when multiple teardown failures are found"""
