@@ -118,7 +118,7 @@ class TempestJunitXMLSuite(MutableSequence):
         if type(xml_string) is bytes:  # not sure why this is sometime a bytes and sometimes a string
             return xml_string.decode('UTF-8')
         else:
-            return etree.tostring(xml)
+            return xml_string
 
     def __getitem__(self, key):
         """MutableSequence ABC override."""

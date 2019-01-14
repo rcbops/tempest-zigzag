@@ -33,7 +33,8 @@ setUpClass you will not find a record for it in the XML report, you will only fi
 does not speak of any downstream tests that were intended to be executed.
 
 This tool will help tempest be more honest about its errors in setup and teardown.  The features described below
-adjust the behavior similar to that found in py.test.
+adjust the behavior similar to that found in `py.test`_. Please see `tempest_xml_failure_examples.rst`_ for setUpClass
+and tearDownClass examples.
 
 When a setUpClass fails this tool will look in the supplied test-list and find tests downstream from the setup,
 it will create new testcase records in the xml and mark them with an error tag.  The original text from setUpClass
@@ -42,3 +43,6 @@ failure is preserved and it is noted where the error occurred.
 When a tearDownClass fails this tool will look at the supplied test-list and find all the upstream test cases mentioned
 in the supplied xml document.  Any test upstream from the teardown failure will be marked with an error tag, preserving
 text from the originating failure.
+
+.. _py.test:: https://docs.pytest.org/en/latest/
+.. _tempest_xml_failure_examples.rst: docs/tempest_xml_failure_examples.rst
