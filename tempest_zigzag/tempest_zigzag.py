@@ -1,6 +1,10 @@
 from __future__ import absolute_import
 import re
+import os
 from lxml import etree
+from json import loads
+from pkg_resources import resource_stream
+from jsonschema import validate, ValidationError
 from tempest_zigzag.tempest_junit_xml_suite import TempestJunitXMLSuite
 from tempest_zigzag.tempest_test_list import TempestTestList
 
@@ -8,12 +12,13 @@ from tempest_zigzag.tempest_test_list import TempestTestList
 class TempestZigZag(object):
 
     @classmethod
-    def process_xml(cls, junit_input_file_path, test_list_path):
+    def process_xml(cls, junit_input_file_path, test_list_path, config_file):
         """Process the files into an xml string
 
         Args:
             junit_input_file_path: (str) the path to the junit xml file to be processed
             test_list_path: (str) the path to the test-list file
+            config_file: (str) the path to the tempest-zigzag configfile
 
         Returns:
             str: the processed xml string
@@ -55,6 +60,13 @@ class TempestZigZag(object):
                     else:
                         xml_suite.append(broken)  # if we can't alter any records we should put the broken record back
 
+        # add global properties
+        config_dict = cls._load_config_file(config_file)
+        global_properties = {}
+        for k, v in list(config_dict['tempest_zigzag_env_vars'].items()):
+            global_properties[k] = os.getenv(v, config_dict['tempest_zigzag_env_vars'][k])
+        xml_suite.properties = global_properties
+
         return xml_suite.xml
 
     @classmethod
@@ -78,3 +90,34 @@ class TempestZigZag(object):
             xml.tag = 'error'
 
         return xml
+
+    @classmethod
+    def _load_config_file(cls, config_file):
+        """Validate and load the contents of a 'tempest-zigzag' config file into memory.
+
+        Args:
+            config_file (str): The path to a tempest_zigzag config file.
+
+        Returns:
+            config_dict (dict): A dictionary of property names and associated values.
+        """
+
+        config_dict = {}
+        schema = loads(resource_stream('tempest_zigzag',
+                                       'data/schema/tempest-zigzag-config.schema.json').read().decode())
+
+        try:
+            with open(config_file, 'r') as f:
+                config_dict = loads(f.read())
+        except (OSError, IOError):
+            raise Exception("Failed to load '{}' config file!".format(config_file))
+        except ValueError as e:
+            raise Exception("The '{}' config file is not valid JSON: {}".format(config_file, str(e)))
+
+        # Validate config
+        try:
+            validate(config_dict, schema)
+        except ValidationError as e:
+            raise Exception("Config file '{}' does not comply with schema: {}".format(config_file, str(e)))
+
+        return config_dict

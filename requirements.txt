@@ -4,6 +4,7 @@ click
 flake8
 future
 ipython
+jsonschema
 lxml
 pytest
 pytest-cov
