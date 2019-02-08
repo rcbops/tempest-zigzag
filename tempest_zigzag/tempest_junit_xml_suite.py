@@ -129,7 +129,7 @@ class TempestJunitXMLSuite(MutableSequence):
         properties = etree.Element('properties')
         for k, v in list(self._properties.items()):
             prop = etree.Element('property')
-            prop.attib['name'] = k
+            prop.attrib['name'] = k
             prop.attrib['value'] = v
             properties.append(prop)
 

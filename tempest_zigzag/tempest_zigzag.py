@@ -26,6 +26,7 @@ class TempestZigZag(object):
         xml_suite = TempestJunitXMLSuite(junit_input_file_path)
         test_list = TempestTestList(test_list_path)
 
+        #  import pdb; pdb.set_trace()
         broken_entries = xml_suite.remove_tests_without_idempotent_ids()
         if broken_entries:
             for broken in broken_entries:
@@ -64,7 +65,7 @@ class TempestZigZag(object):
         config_dict = cls._load_config_file(config_file)
         global_properties = {}
         for k, v in list(config_dict['tempest_zigzag_env_vars'].items()):
-            global_properties[k] = os.getenv(v, config_dict['tempest_zigzag_env_vars'][k])
+            global_properties[k] = os.getenv(k, config_dict['tempest_zigzag_env_vars'][k])
         xml_suite.properties = global_properties
 
         return xml_suite.xml
@@ -104,7 +105,7 @@ class TempestZigZag(object):
 
         config_dict = {}
         schema = loads(resource_stream('tempest_zigzag',
-                                       'data/schema/tempest-zigzag-config.schema.json').read().decode())
+                                       'data/tempest-zigzag-config.schema.json').read().decode())
 
         try:
             with open(config_file, 'r') as f:

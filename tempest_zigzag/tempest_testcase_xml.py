@@ -1,5 +1,8 @@
 from __future__ import absolute_import
 import re
+from lxml import etree
+from datetime import datetime
+from datetime import timedelta
 
 
 class TempestTestcaseXml(object):
@@ -10,9 +13,35 @@ class TempestTestcaseXml(object):
 
     _TEMPEST_UUID_RGX = re.compile(r'(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)')
     _CLASSNAME = re.compile(r'\((.*)\)')
+    _date_time_format = '%Y-%m-%dT%H:%M:%SZ'  # the highest degree of accuracy that qtest will accept (no micro seconds)
 
     def __init__(self, xml_element):
+        self._date_time_now = datetime.utcnow()
         self._xml_element = xml_element
+
+    @property
+    def start_time(self):
+        """Gets the start time
+
+        Returns:
+            str: the end date of this test execution
+        """
+        return self._date_time_now.strftime(self._date_time_format)
+
+    @property
+    def end_time(self):
+        """Gets the end time
+
+        Returns:
+            str: the end date of this test execution
+        """
+
+        start = datetime.strptime(self.start_time, self._date_time_format)
+        # if time is a fraction of a second round up to one second
+        time = 1 if float(self.time) < 1 else self.time
+        duration = timedelta(seconds=float(time))
+        end = start + duration
+        return end.strftime(self._date_time_format)
 
     @property
     def idempotent_id(self):
@@ -29,7 +58,7 @@ class TempestTestcaseXml(object):
         """
 
         try:
-            return self.xml_element.attrib['classname']
+            return self._xml_element.attrib['classname']
         except KeyError as e:
             raise TempestXMLAccessError(e)
 
@@ -56,7 +85,7 @@ class TempestTestcaseXml(object):
         """
 
         try:
-            return self.xml_element.attrib['name']
+            return self._xml_element.attrib['name']
         except KeyError as e:
             raise TempestXMLAccessError(e)
 
@@ -70,7 +99,7 @@ class TempestTestcaseXml(object):
         """
 
         try:
-            return self.xml_element.attrib['time']
+            return self._xml_element.attrib['time']
         except KeyError as e:
             raise TempestXMLAccessError(e)
 
@@ -82,7 +111,7 @@ class TempestTestcaseXml(object):
             list : list of all the child failure elements
         """
 
-        return self.xml_element.findall('failure')
+        return self._xml_element.findall('failure')
 
     @property
     def xml_error_elements(self):
@@ -92,7 +121,7 @@ class TempestTestcaseXml(object):
             list : list of all child error elements
         """
 
-        return self.xml_element.findall('error')
+        return self._xml_element.findall('error')
 
     @property
     def child_elements(self):
@@ -101,7 +130,7 @@ class TempestTestcaseXml(object):
         Returns:
             list : a list of child etree.Element
         """
-        return list(self.xml_element)
+        return list(self._xml_element)
 
     @property
     def xml_element(self):
@@ -112,6 +141,13 @@ class TempestTestcaseXml(object):
         Returns:
             etree.Element
         """
+        properties = etree.Element('properties')
+        properties.append(etree.Element('property', {'name': 'start_time', 'value': self.start_time}))
+        properties.append(etree.Element('property', {'name': 'end_time', 'value': self.end_time}))
+        if self.idempotent_id:
+            properties.append(etree.Element('property', {'name': 'test_id', 'value': self.idempotent_id}))
+        properties.append(etree.Element('property', {'name': 'test_step', 'value': 'false'}))
+        self._xml_element.append(properties)
         return self._xml_element
 
 
