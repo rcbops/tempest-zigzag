@@ -5,9 +5,15 @@
     "TEMPEST_BUILD_URL": null,
     "TEMPEST_BUILD_NUMBER": null
   },
-  "test_cycle": "{{ TEMPEST_TEST_CYCLE }}",
-  "project_id": "{{ TEMPEST_PROJECT_ID }}",
-  "module_hierarchy": ["{{ strftime('%Y') }}", "{{ strftime('%B') }}", "{{zz_testcase_class}}"],
-  "build_url": "{{ TEMPEST_BUILD_URL }}",
-  "build_number": "{{ TEMPEST_BUILD_NUMBER }}"
+  "zigzag": {
+    "test_cycle": "{{ TEMPEST_TEST_CYCLE }}",
+    "project_id": "{{ TEMPEST_PROJECT_ID }}",
+    "module_hierarchy": [
+      "{{ strftime('%Y') }}",
+      "{{ strftime('%B') }}",
+      "{{zz_testcase_class}}"
+    ],
+    "build_url": "{{ TEMPEST_BUILD_URL }}",
+    "build_number": "{{ TEMPEST_BUILD_NUMBER }}"
+  }
 }

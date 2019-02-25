@@ -1,7 +1,7 @@
 include LICENSE
 include README.rst
-include tempest_zigzag/data/*
 
+recursive-include tempest_zigzag/data *
 recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
