@@ -130,7 +130,7 @@ class TempestJunitXMLSuite(MutableSequence):
         for k, v in list(self._properties.items()):
             prop = etree.Element('property')
             prop.attrib['name'] = k
-            prop.attrib['value'] = v
+            prop.attrib['value'] = v if v else ''  # if a value is not truthy set it to emptystring
             properties.append(prop)
 
         return properties

@@ -40,4 +40,7 @@ class TestTempestJunitXMLSuite(object):
 
         for testcase in etree.XML(xml_string):
             #  ID should be inside of the tempest formatted xml in the name attribute
-            assert TempestTestcaseXml._TEMPEST_UUID_RGX.search(testcase.attrib['name'])
+            try:
+                assert TempestTestcaseXml._TEMPEST_UUID_RGX.search(testcase.attrib['name'])
+            except KeyError:  # the <properties> element does not have a name
+                pass
