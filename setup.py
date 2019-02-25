@@ -8,7 +8,8 @@ from setuptools import setup
 requirements = ['Click>=6.0',
                 'lxml',
                 'future',
-                'jsonschema']
+                'jsonschema',
+                'rpc-zigzag~=1.0.0']
 packages = ['tempest_zigzag']
 entry_points = {
     'console_scripts': [

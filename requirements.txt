@@ -12,3 +12,4 @@ pytest-helpers-namespace
 pytest-mock
 tox
 twine
+rpc-zigzag
