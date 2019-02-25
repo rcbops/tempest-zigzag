@@ -26,7 +26,6 @@ class TempestZigZag(object):
         xml_suite = TempestJunitXMLSuite(junit_input_file_path)
         test_list = TempestTestList(test_list_path)
 
-        #  import pdb; pdb.set_trace()
         broken_entries = xml_suite.remove_tests_without_idempotent_ids()
         if broken_entries:
             for broken in broken_entries:
