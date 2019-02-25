@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 import re
 from lxml import etree
+from datetime import datetime
+from datetime import timedelta
 
 
 class TempestTestcaseList(object):
@@ -8,6 +10,7 @@ class TempestTestcaseList(object):
     _FULL_CLASSNAME = re.compile(r'^(\w|\.)*')
     _TEST_PARAMETERS = re.compile(r'\[(.*)\]')
     _TEMPEST_UUID_RGX = re.compile(r'(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)')
+    _date_time_format = '%Y-%m-%dT%H:%M:%SZ'  # the highest degree of accuracy that qtest will accept (no micro seconds)
 
     def __init__(self, test_entry_string):
         """Creates a new Tempest Test Execution
@@ -18,6 +21,7 @@ class TempestTestcaseList(object):
         self._test_entry_string = test_entry_string.strip()
         self._xml_element = None
         self._time = '0.00'
+        self._date_time_now = datetime.utcnow()  # use same time for all operations
 
     @property
     def xml_element(self):
@@ -41,9 +45,41 @@ class TempestTestcaseList(object):
             for xml_attrib_name, value in list(d.items()):
                 if value:  # only add attribute if there is a value for it
                     xml.attrib[xml_attrib_name] = value
+
+            properties = etree.Element('properties')
+            properties.append(etree.Element('property', {'name': 'start_time', 'value': self.start_time}))
+            properties.append(etree.Element('property', {'name': 'end_time', 'value': self.end_time}))
+            properties.append(etree.Element('property', {'name': 'test_id', 'value': self.idempotent_id}))
+            properties.append(etree.Element('property', {'name': 'test_step', 'value': 'false'}))
+
+            xml.append(properties)
             self._xml_element = xml
 
         return self._xml_element
+
+    @property
+    def start_time(self):
+        """Gets the start time
+
+        Returns:
+            str: the end date of this test execution
+        """
+        return self._date_time_now.strftime(self._date_time_format)
+
+    @property
+    def end_time(self):
+        """Gets the end time
+
+        Returns:
+            str: the end date of this test execution
+        """
+
+        start = datetime.strptime(self.start_time, self._date_time_format)
+        # if time is a fraction of a second round up to one second
+        time = 1 if float(self.time) < 1 else self.time
+        duration = timedelta(seconds=float(time))
+        end = start + duration
+        return end.strftime(self._date_time_format)
 
     @property
     def _xml_name(self):

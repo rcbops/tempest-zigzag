@@ -1,1 +1,2 @@
 pip<10.0.0
+rpc-zigzag~=1.0

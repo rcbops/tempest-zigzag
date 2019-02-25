@@ -4,6 +4,7 @@ click
 flake8
 future
 ipython
+jsonschema
 lxml
 pytest
 pytest-cov
@@ -11,3 +12,4 @@ pytest-helpers-namespace
 pytest-mock
 tox
 twine
+rpc-zigzag

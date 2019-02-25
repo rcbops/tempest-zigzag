@@ -48,7 +48,7 @@ class TestTempestTestcaseList(object):
         element = ttcl.xml_element
         element.append(etree.Element('totes_magotes'))
 
-        assert ttcl.xml_element[0].tag == 'totes_magotes'
+        assert ttcl.xml_element[1].tag == 'totes_magotes'
 
     def test_find_errors(self, single_test_list_entry):
 

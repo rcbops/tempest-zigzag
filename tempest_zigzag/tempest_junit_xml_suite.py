@@ -20,6 +20,7 @@ class TempestJunitXMLSuite(MutableSequence):
         self._initial_junit_xml = junit_xml_doc.getroot()
         # read the testcases from the xml
         self._test_list = [TempestTestcaseXml(element) for element in self._initial_junit_xml.findall('testcase')]
+        self._properties = {}
 
     def remove_tests_without_idempotent_ids(self):
         """Removes any test cases that do not have the idempotent_id property
@@ -105,6 +106,8 @@ class TempestJunitXMLSuite(MutableSequence):
 
         # build an etree element
         xml = etree.Element('testsuite')
+        xml.append(self.properties)
+
         for xml_attrib_name, value in list(d.items()):
             if value is not None:  # only add attribute if there is a value for it
                 xml.attrib[xml_attrib_name] = str(value)
@@ -119,6 +122,23 @@ class TempestJunitXMLSuite(MutableSequence):
             return xml_string.decode('UTF-8')
         else:
             return xml_string
+
+    @property
+    def properties(self):
+        """The xml properties element"""
+        properties = etree.Element('properties')
+        for k, v in list(self._properties.items()):
+            prop = etree.Element('property')
+            prop.attrib['name'] = k
+            prop.attrib['value'] = v if v else ''  # if a value is not truthy set it to emptystring
+            properties.append(prop)
+
+        return properties
+
+    @properties.setter
+    def properties(self, value):
+        """Sets the _properties dict"""
+        self._properties = value
 
     def __getitem__(self, key):
         """MutableSequence ABC override."""
