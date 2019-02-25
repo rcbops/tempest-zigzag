@@ -9,7 +9,7 @@ requirements = ['Click>=6.0',
                 'lxml',
                 'future',
                 'jsonschema',
-                'rpc-zigzag~=1.0.0']
+                'rpc-zigzag~=1.0']
 packages = ['tempest_zigzag']
 entry_points = {
     'console_scripts': [
